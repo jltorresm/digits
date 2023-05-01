@@ -1,15 +1,12 @@
 use std::collections::VecDeque;
 
-#[derive(Copy, Clone, Debug, Default)]
-pub enum Strategy {
-    #[default]
-    BruteForce,
-}
+pub use strategy::Strategy;
+
+mod strategy;
 
 pub fn operations(target: u32, numbers: Vec<u32>, strategy: Strategy) -> Vec<String> {
-    match strategy {
-        Strategy::BruteForce => brute(target, numbers.into(), &Vec::new()),
-    }
+    let solutions = brute_force_solutions(target, numbers.into(), &Vec::new());
+    strategy.filter(solutions)
 }
 
 fn brute_force_solutions(
