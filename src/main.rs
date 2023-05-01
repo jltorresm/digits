@@ -1,3 +1,4 @@
+use crate::guess::Strategy;
 use crate::primes::{get_components, get_prime_factors};
 use anyhow::Result;
 use dialoguer::{theme::ColorfulTheme, Input};
@@ -22,6 +23,13 @@ fn main() -> Result<()> {
         .interact_text()?;
     let numbers = get_numbers(&numbers);
 
+    let strategy: Strategy = dialoguer::Select::with_theme(&theme)
+        .with_prompt("Select a strategy")
+        .items(&Strategy::all())
+        .default(Strategy::default() as usize)
+        .interact()?
+        .into();
+
     let prime_factors = get_prime_factors(target);
     let factors = get_components(target);
 
@@ -29,8 +37,9 @@ fn main() -> Result<()> {
     println!("\t-> prime factors {prime_factors:?}");
     println!("\t-> components {factors:?}");
 
-    let guess = guess::operations(target, numbers, guess::Strategy::default());
-    println!("\t-> guess {guess:#?}");
+    let guess = guess::operations(target, numbers, strategy);
+    println!("\t-> strategy {strategy:?}");
+    println!("\t-> guess {guess:?}");
 
     Ok(())
 }
