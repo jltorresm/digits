@@ -1,10 +1,7 @@
-use crate::guess::Strategy;
-use crate::primes::{get_components, get_prime_factors};
 use anyhow::Result;
 use dialoguer::{theme::ColorfulTheme, Input};
-
-mod guess;
-mod primes;
+use digits::guess::{self, Strategy};
+use digits::primes::{get_components, get_prime_factors};
 
 const DEFAULT_TARGET: &str = "77";
 const DEFAULT_INPUT: &str = "1,2,3,4,5,25";

@@ -1,5 +1,6 @@
 mod known;
 
+#[must_use]
 pub fn get_components(num: u32) -> Vec<u32> {
     let mut factors = Vec::new();
     let mut remainder = num;
@@ -19,6 +20,7 @@ pub fn get_components(num: u32) -> Vec<u32> {
     factors
 }
 
+#[must_use]
 pub fn get_prime_factors(num: u32) -> Vec<u32> {
     let mut factors = Vec::from([]);
 
@@ -35,6 +37,7 @@ pub fn get_prime_factors(num: u32) -> Vec<u32> {
     factors
 }
 
+#[must_use]
 pub fn is_prime(num: u32) -> bool {
     if num <= known::MAX {
         return known::is_prime(num);
