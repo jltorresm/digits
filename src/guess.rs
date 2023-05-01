@@ -6,19 +6,16 @@ pub enum Strategy {
     BruteForce,
 }
 
-pub fn operations(target: u32, numbers: Vec<u32>, strategy: Strategy) -> String {
+pub fn operations(target: u32, numbers: Vec<u32>, strategy: Strategy) -> Vec<String> {
     match strategy {
-        Strategy::BruteForce => {
-            let res = Vec::new();
-            brute(target, numbers.into(), &res);
-            format!("{res:?}")
-        }
+        Strategy::BruteForce => brute(target, numbers.into(), &Vec::new()),
     }
 }
 
-fn brute(target: u32, mut numbers: VecDeque<u32>, path: &[String]) -> bool {
+fn brute(target: u32, mut numbers: VecDeque<u32>, path: &[String]) -> Vec<String> {
     numbers.make_contiguous().sort_by(|a, b| b.cmp(a));
     let combos = nc2(&numbers);
+    let mut valid_paths = Vec::new();
 
     for (a, b, rest) in combos {
         let (prod, valid_prod, prod_path) = (
@@ -26,7 +23,7 @@ fn brute(target: u32, mut numbers: VecDeque<u32>, path: &[String]) -> bool {
             a > 1 && b > 1,
             push_immutable(path, format!("{a} * {b}")),
         );
-        let (add, add_path) = (a + b, push_immutable(path, format!("{a} + {b}")));
+        let (add, valid_add, add_path) = (a + b, true, push_immutable(path, format!("{a} + {b}")));
         let (div, div_exact, div_path) = (
             a / b,
             a % b == 0 && b != 1,
@@ -39,51 +36,57 @@ fn brute(target: u32, mut numbers: VecDeque<u32>, path: &[String]) -> bool {
         );
 
         if valid_prod && prod == target {
-            println!("{prod_path:?}");
+            // println!("{prod_path:?}");
+            valid_paths.push(prod_path.join(" | "));
         } else if add == target {
-            println!("{add_path:?}");
+            // println!("{add_path:?}");
+            valid_paths.push(add_path.join(" | "));
         } else if div_exact && div == target {
-            println!("{div_path:?}");
+            // println!("{div_path:?}");
+            valid_paths.push(div_path.join(" | "));
         } else if sub_positive && sub == target {
-            println!("{sub_path:?}");
+            // println!("{sub_path:?}");
+            valid_paths.push(sub_path.join(" | "));
         }
 
         if (valid_prod && prod == target)
-            || add == target
+            || (valid_add && add == target)
             || (div_exact && div == target)
             || (sub_positive && sub == target)
         {
-            return true;
+            return valid_paths;
         }
 
         // PRODUCT path: a * b
         if valid_prod {
             let mut prod_nums = rest.clone();
             prod_nums.push_front(prod);
-            brute(target, prod_nums, &prod_path);
+            valid_paths.extend(brute(target, prod_nums, &prod_path));
         }
 
         // ADDITION path: a + b
-        let mut add_nums = rest.clone();
-        add_nums.push_front(add);
-        brute(target, add_nums, &add_path);
+        if valid_add {
+            let mut add_nums = rest.clone();
+            add_nums.push_front(add);
+            valid_paths.extend(brute(target, add_nums, &add_path));
+        }
 
         // DIVISION path: a / b
         if div_exact {
             let mut div_nums = rest.clone();
             div_nums.push_front(div);
-            brute(target, div_nums, &div_path);
+            valid_paths.extend(brute(target, div_nums, &div_path));
         }
 
         // SUBTRACTION path: a - b
         if sub_positive {
             let mut sub_nums = rest.clone();
             sub_nums.push_front(sub);
-            brute(target, sub_nums, &sub_path);
+            valid_paths.extend(brute(target, sub_nums, &sub_path));
         }
     }
 
-    false
+    valid_paths
 }
 
 fn nc2(numbers: &VecDeque<u32>) -> VecDeque<(u32, u32, VecDeque<u32>)> {

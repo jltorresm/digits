@@ -30,7 +30,7 @@ fn main() -> Result<()> {
     println!("\t-> components {factors:?}");
 
     let guess = guess::operations(target, numbers, guess::Strategy::default());
-    println!("\t-> guess {guess:?}");
+    println!("\t-> guess {guess:#?}");
 
     Ok(())
 }
