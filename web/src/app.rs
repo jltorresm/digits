@@ -18,9 +18,9 @@ pub fn app(cx: Scope) -> Element {
             .try_into()
             .expect("input parse error");
 
-        if let Some(res) = cache.get(&input.key()) {
-            log::info!("cache hit {}", input.key());
-            result.set(Some([res].into()));
+        let res = if let Some(res) = cache.get(&input.key()) {
+            log::info!("cache hit {} -> {res}", input.key());
+            serde_json::from_str(&res).expect("error while deserialising cache entry")
         } else {
             let res = digits::guess::operations(
                 input.target,
@@ -28,8 +28,10 @@ pub fn app(cx: Scope) -> Element {
                 digits::guess::Strategy::Shortest,
             );
             cache.set(input.key().as_str(), json!(res).to_string().as_str());
-            result.set(Some(res));
-        }
+            res
+        };
+
+        result.set(Some(res));
     };
 
     cx.render(rsx! {
