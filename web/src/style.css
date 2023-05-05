@@ -1,0 +1,100 @@
+:root {
+    --color-black: #0d1117;
+    --color-gray-900: #161b22;
+    --color-gray-700: #21262d;
+    --color-gray-500: #89929b;
+    --color-gray-300: #c6cdd5;
+    --color-gray-100: #ecf2f8;
+    --color-red: #fa7970;
+    --color-orange: #faa356;
+    --color-green: #7ce38b;
+    --color-light-blue: #a2d2fb;
+    --color-blue: #77bdfb;
+    --color-purple: #cea5fb;
+}
+
+body {
+    background-color: var(--color-gray-900);
+    color: var(--color-blue);
+}
+
+h2 {
+    color: var(--color-green);
+}
+
+#main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+main.digits-web {
+    max-width: 500px;
+}
+
+.form-floating > label {
+    color: var(--color-gray-500) !important;
+}
+
+.target-container {
+    width: 140px;
+    margin: auto;
+    box-shadow: /* inner */ 0 0 40px 10px var(--color-gray-100), /* middle */ 0 0 80px 20px var(--color-red), /* outer */ 0 0 100px 30px var(--color-blue);
+}
+
+.target-container > input {
+    font-size: 3em;
+    font-family: monospace;
+    padding: 3rem 1.6rem 2rem !important;
+    border: 0;
+}
+
+.target-container > label {
+    line-height: 3em;
+}
+
+.target-container > label::after {
+    background-color: transparent !important;
+}
+
+.target-container.form-floating > .form-control:focus ~ label, .target-container.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(.85) translateY(-1.4rem) translateX(0.15rem);
+}
+
+.operator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input.operator {
+    width: 2em;
+    height: 2em;
+    border: 0;
+    border-radius: 50%;
+    text-align: center;
+    font-family: monospace;
+    font-size: 2em;
+    box-shadow: /* inner */ 0 0 10px 1px var(--color-gray-100), /* middle */ 0 0 20px 2px var(--color-red);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.spinner-grow.text-light {
+    color: var(--color-gray-900) !important;
+}
+
+.spinner-grow {
+    box-shadow: /* inner */ 0 0 10px 1px var(--color-gray-100), /* middle */ 0 0 20px 2px var(--color-red), /* outer */ 0 0 30px 3px var(--color-blue);
+}
