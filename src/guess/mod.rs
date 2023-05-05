@@ -6,6 +6,7 @@ mod strategy;
 
 #[must_use]
 pub fn operations(target: u32, numbers: Vec<u32>, strategy: Strategy) -> Vec<String> {
+    log::info!("new game -> get to {target} with {numbers:?} using strategy {strategy}");
     let solutions = brute_force_solutions(target, numbers.into(), &Vec::new());
     strategy.filter(solutions)
 }

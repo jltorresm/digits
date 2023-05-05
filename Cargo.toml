@@ -11,3 +11,4 @@ name = "digits-cli"
 [dependencies]
 anyhow = "1.0.70"
 dialoguer = "0.10.4"
+log = "0.4.17"

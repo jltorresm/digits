@@ -30,11 +30,14 @@ impl Display for Strategy {
 }
 
 impl Strategy {
+    #[must_use]
     pub fn all() -> [Strategy; 2] {
         [Strategy::Shortest, Strategy::Longest]
     }
 
     pub fn filter(self, mut solutions: Vec<Vec<String>>) -> Vec<String> {
+        log::info!("number of raw solutions found -> {}", solutions.len());
+
         match self {
             Strategy::Shortest => {
                 solutions.sort_by_key(Vec::len);
