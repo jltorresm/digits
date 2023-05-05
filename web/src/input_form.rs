@@ -22,7 +22,7 @@ pub fn DigitsForm<'a>(cx: Scope, on_submit: EventHandler<'a, FormEvent>) -> Elem
                 label {r#for: "target", "Target Number"}
             }
 
-            h2 { class: "display-6 text-center mb-3", "Numbers to Operate" }
+            h3 { class: "text-center mb-3", "Numbers to Operate" }
 
             div {
                 class: "row mb-3 operator-container",
