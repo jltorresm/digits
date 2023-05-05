@@ -1,7 +1,8 @@
 use dioxus::prelude::*;
 
+#[allow(non_snake_case)]
 #[inline_props]
-pub fn digits_form<'a>(cx: Scope, on_submit: EventHandler<'a, FormEvent>) -> Element<'a> {
+pub fn DigitsForm<'a>(cx: Scope, on_submit: EventHandler<'a, FormEvent>) -> Element<'a> {
     cx.render(rsx! {
         form {
             onsubmit: move |e| on_submit.call(e),

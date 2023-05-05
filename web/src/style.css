@@ -14,8 +14,8 @@
 }
 
 body {
-    background-color: var(--color-gray-900);
-    color: var(--color-blue);
+    /*background-color: var(--color-gray-900);*/
+    /*color: var(--color-gray-100);*/
 }
 
 h2 {
@@ -40,7 +40,7 @@ main.digits-web {
 .target-container {
     width: 140px;
     margin: auto;
-    box-shadow: /* inner */ 0 0 40px 10px var(--color-gray-100), /* middle */ 0 0 80px 20px var(--color-red), /* outer */ 0 0 100px 30px var(--color-blue);
+    box-shadow: /* inner */ 0 0 40px 5px var(--color-gray-100), /* middle */ 0 0 80px 10px var(--color-red), /* outer */ 0 0 100px 20px var(--color-blue);
 }
 
 .target-container > input {
@@ -97,4 +97,36 @@ input[type=number] {
 
 .spinner-grow {
     box-shadow: /* inner */ 0 0 10px 1px var(--color-gray-100), /* middle */ 0 0 20px 2px var(--color-red), /* outer */ 0 0 30px 3px var(--color-blue);
+}
+
+article.results {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+article.results .card-body {
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.result .badge:nth-last-child(5) {
+    background-color: var(--color-green) !important;
+}
+
+.result .badge:nth-last-child(4) {
+    background-color: var(--color-purple) !important;
+}
+
+.result .badge:nth-last-child(3) {
+    background-color: var(--color-red) !important;
+}
+
+.result .badge:nth-last-child(2) {
+    background-color: var(--color-orange) !important;
+}
+
+.result .badge:nth-last-child(1) {
+    background-color: var(--color-gray-100) !important;
 }

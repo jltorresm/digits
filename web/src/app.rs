@@ -1,11 +1,11 @@
-use crate::input_form::digits_form;
+use crate::input_form::DigitsForm;
+use crate::results::Results;
 use anyhow::anyhow;
 use dioxus::prelude::*;
-use dioxus_router::{Route, Router};
 use std::collections::HashMap;
 
 pub fn app(cx: Scope) -> Element {
-    let result = use_state(cx, Vec::<String>::new);
+    let result: &UseState<Option<Vec<String>>> = use_state(cx, || None);
 
     let handle_submit = move |event: FormEvent| {
         let input: DigitsInput = event
@@ -19,19 +19,24 @@ pub fn app(cx: Scope) -> Element {
             input.operators,
             digits::guess::Strategy::Shortest,
         );
-        result.set(res);
+        result.set(Some(res));
     };
 
     cx.render(rsx! {
         main {
             class: "digits-web",
             style { include_str!("../src/style.css") }
-            h1 { class: "display-1 font-bold text-center mb-5", "Digits Solver" }
-            Router {
-                Route { to: "/", digits_form { on_submit: handle_submit } "{result:?}" },
-                Route { to: "/spin", Spinner { alt: "Loading...".to_string(), hidden: false } },
-                Route { to: "", "not found" },
+            h1 { class: "display-1 font-bold text-center", "Digits Solver" }
+            p {
+                class: "text-center mb-5",
+                "Naive solver for the New York Times Game ",
+                a {
+                    href: "https://www.nytimes.com/games/digits",
+                    "Digits"
+                }
             }
+            DigitsForm { on_submit: handle_submit }
+            Results { hidden: result.is_none(), results: result.get().clone().unwrap_or_default() }
         }
     })
 }
