@@ -1,0 +1,54 @@
+name: deploy
+
+on:
+  workflow_dispatch: # to be able to launch the workflow manually
+  push:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "deploy"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install rust toolchain 🦀
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
+          profile: minimal
+      - name: Install trunk 🔧
+        uses: jetli/trunk-action@v0.1.0
+        with:
+          version: latest
+      - name: Run tests 🔬
+        run: cargo test --workspace
+      - name: Build with trunk 🔨
+        run: cd web && trunk build --release
+      - name: Upload artifact 🌐
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Deploy to Github Pages 🚀
+      id: deployment
+      uses: actions/deploy-pages@v1
