@@ -343,7 +343,9 @@ dependencies = [
  "dioxus",
  "dioxus-web",
  "log",
+ "serde_json",
  "wasm-logger",
+ "web-sys",
 ]
 
 [[package]]
