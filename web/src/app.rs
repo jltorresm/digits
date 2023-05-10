@@ -2,6 +2,7 @@ use crate::cache::Cache;
 use crate::input_form::DigitsForm;
 use crate::results::Results;
 use anyhow::anyhow;
+use digits::guess::Strategy;
 use dioxus::prelude::*;
 use serde_json::json;
 use std::collections::HashMap;
@@ -22,11 +23,8 @@ pub fn app(cx: Scope) -> Element {
             log::info!("cache hit {} -> {res}", input.key());
             serde_json::from_str(&res).expect("error while deserialising cache entry")
         } else {
-            let res = digits::guess::operations(
-                input.target,
-                input.operators.clone(),
-                digits::guess::Strategy::Shortest,
-            );
+            let res =
+                digits::guess::operations(input.target, input.operators.clone(), input.strategy);
             cache.set(input.key().as_str(), json!(res).to_string().as_str());
             res
         };
@@ -78,13 +76,14 @@ pub fn Spinner(cx: Scope, alt: String, hidden: bool) -> Element {
 pub struct DigitsInput {
     target: u32,
     operators: Vec<u32>,
+    strategy: Strategy,
 }
 
 impl DigitsInput {
     pub fn key(&self) -> String {
         let mut ops = self.operators.clone();
         ops.sort_unstable();
-        format!("t:{}|o:{:?}", self.target.clone(), ops)
+        format!("t:{}|o:{:?}|s:{}", self.target.clone(), ops, self.strategy)
     }
 }
 
@@ -96,6 +95,12 @@ impl TryFrom<HashMap<String, String>> for DigitsInput {
             .get("target")
             .ok_or(anyhow!("missing target value"))?
             .parse()?;
+
+        let strategy = value
+            .get("strategy")
+            .ok_or(anyhow!("missing strategy value"))?
+            .parse::<usize>()?
+            .into();
 
         let tmp = value
             .into_iter()
@@ -109,6 +114,10 @@ impl TryFrom<HashMap<String, String>> for DigitsInput {
 
         let operators: Vec<u32> = tmp.into_iter().map(Result::unwrap).collect();
 
-        Ok(DigitsInput { target, operators })
+        Ok(DigitsInput {
+            target,
+            operators,
+            strategy,
+        })
     }
 }
