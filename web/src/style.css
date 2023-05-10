@@ -100,6 +100,7 @@ input[type=number] {
 article.results {
     display: grid;
     grid-template-columns: 50% 50%;
+    max-height: 50px;
 }
 
 article.results .card-body {

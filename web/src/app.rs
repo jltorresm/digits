@@ -36,15 +36,23 @@ pub fn app(cx: Scope) -> Element {
 
     cx.render(rsx! {
         main {
-            class: "digits-web",
+            class: "digits-web text-center",
             style { include_str!("../src/style.css") }
             h1 { class: "display-1 font-bold text-center", "Digits Solver" }
             p {
-                class: "text-center mb-5",
+                class: "text-center mb-1",
                 "Naive solver for the New York Times Game ",
                 a {
                     href: "https://www.nytimes.com/games/digits",
                     "Digits"
+                }
+            }
+            p {
+                class: "mb-5",
+                "see the code in "
+                a {
+                    href: "https://github.com/jltorresm/digits",
+                    "GitHub"
                 }
             }
             DigitsForm { on_submit: handle_submit }
