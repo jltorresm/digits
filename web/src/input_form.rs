@@ -19,7 +19,7 @@ pub fn DigitsForm<'a>(cx: Scope, on_submit: EventHandler<'a, FormEvent>) -> Elem
                 input {
                     r#type: "number",
                     required: true,
-                    class: "form-control",
+                    class: "form-control text-center",
                     id: "target",
                     name: "target",
                     placeholder: 77
